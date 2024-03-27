@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Transcrição de Áudio</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="navbar-brand">
+          <a href="index.html">
+            <img src="img/Logo1.png" alt="" />
+          </a>
+        </div>
+        <ul class="navbar-nav-left">
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="index.html">Sobre</a>
+          </li>
+          <li>
+          <a href="index.html">Contato</a>
+        </li>
+      </ul>
+        <button type="button" class="CENTRAL" id="menu-btn">
+          <span class="top"></span>
+          <span class="middle"></span>
+          <span class="bottom"></span>
+        </button>
+      </div>
+    </nav>
+
+
+    <div class="container-slider">
+      <button id="prev-button"><img src="img/seta.png" alt="prev-button"></button>
+      <div class="container-images">
+        <img src="img/p1.jpg  " alt="p3.png" class="slider on">
+        <img src="img/p2.jpg" alt="p4.png" class="slider">
+      </div>
+      <button id="next-button"><img src="img/seta.png" alt="next-button"></button>
+    </div>
+    <br>
+    <br>
+
+  <div id="contrastOptions">
+  
+    <button id="blackAndWhite">Preto e Branco</button>
+    <button id="highContrast">Alto Contraste</button>
+    <button id="blueContrast">Azul</button>
+    <button id="greenContrast">Verde</button>
+    <button id="yellowContrast">Amarelo</button>
+  </div>
+  
+  <div class="flex-container">
+    <div class="container">
+      <button onclick="toggleVisibility('section1')">Mostrar/Ocultar</button>
+      <div id="section1" class="hidden">
+        <h2>Importância da Transcrição de áudio</h2>
+
+        <div class="figura">
+        <img src="img/img1.png" alt="">
+      </div>
+        <p>A transcrição de áudio é vital para acessibilidade, tornando conteúdo auditivo disponível para pessoas surdas ou com deficiência auditiva, além de facilitar a pesquisa e a indexação de informações. Também auxilia na preservação de dados, facilitando revisões e traduções, e aprimorando a aprendizagem em contextos educacionais e de produção de conteúdo.
+
+         </p>
+         <button onclick="window.location.href='https://www.brazilts.com.br/blog/o-que-e-servico-de-transcricao-de-audio-e-qual-sua-importancia/'">Saiba Mais</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <button onclick="toggleVisibility('section2')">Mostrar/Ocultar</button>
+      <div id="section2" class="hidden">
+        <h2>Aplicação da Transcrição de áudio</h2>
+
+        <div class="figura">
+          <img src="img/img2.png" alt="">
+      </div>
+        <p>A transcrição de áudio é amplamente utilizada em diversos setores, incluindo mídia, educação, negócios e saúde, para tornar conteúdo acessível, facilitar a pesquisa e a documentação, além de permitir análises e otimizações em marketing e tecnologia. Essa ferramenta é essencial para a criação de legendas, registros precisos e assistentes de voz, entre outras aplicações.
+
+         </p>
+         <button onclick="window.location.href='https://mundoescrito.com.br/tipos-de-transcricao-de-audio/'">Saiba Mais</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <button onclick="toggleVisibility('section3')">Mostrar/Ocultar</button>
+      <div id="section3" class="hidden">
+        <h2>Criação da Transcrição de áudio</h2>
+
+        <div class="figura">
+          <img src="img/img3.png" alt="">
+      </div>
+        <p>A criação de uma transcrição de áudio envolve a captura do áudio, seguida pela transcrição manual ou automática do conteúdo. Após a revisão e formatação, a transcrição final é entregue ao cliente, adaptada às suas necessidades específicas, como legenda de vídeo ou documento de texto.
+
+         </p>
+         <button onclick="window.location.href='https://aliancatraducoes.com/servico/transcricao/transcricao-de-audio-para-texto/#:~:text=A%20transcri%C3%A7%C3%A3o%20de%20%C3%A1udio%20nada,ou%20at%C3%A9%20mesmo%20em%20v%C3%ADdeo.'">Saiba Mais</button>
+      </div>
+    </div>
+  </div>
+  <center>
+    <button id="startButton">Iniciar Transcrição</button>
+    <div id="transcription"></div>
+  </center>
+
+  <footer>
+    <center>
+      <p>© 2024 – Transcrição de áudio na Acessibilidade - Desenvolvido por Alexandre Nogueira</p>
+    </center>
+  </footer>
+
+  <script>
+      // Obtém referências para os elementos HTML relevantes
+      const transcription = document.getElementById('transcription');
+      const startButton = document.getElementById('startButton');
+      let recognizing = false; 
+      let finalTranscript = ''; 
+      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+
+      if (window.SpeechRecognition) {
+        var recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true; 
+        recognition.lang = 'pt-BR'; 
+        recognition.onstart = function() {
+          recognizing = true; 
+          startButton.textContent = 'Parar Transcrição'; 
+        };
+    
+        recognition.onerror = function(event) {
+          console.log('Erro de reconhecimento: ' + event.error);
+        };
+    
+        recognition.onend = function() {
+          recognizing = false; 
+          startButton.textContent = 'Iniciar Transcrição'; 
+        };
+
+        recognition.onresult = function(event) {   
+          let interimTranscript = ''; 
+       
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+            
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+            
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          transcription.textContent = finalTranscript + interimTranscript;
+        };
+
+        startButton.addEventListener('click', function() {
+          if (recognizing) {
+            recognition.stop(); 
+            return;
+          }
+          finalTranscript = '';
+          transcription.textContent = '';
+          recognition.start();
+        }, false);
+    
+      } else {
+        startButton.style.visibility = 'hidden';
+        transcription.textContent = 'Seu navegador não suporta a API de reconhecimento de fala.';
+      }
+
+
+  function toggleVisibility(sectionId) {
+  var section = document.getElementById(sectionId);
+  if (section.style.display === 'none' || section.style.display === '') {
+    section.style.display = 'block';
+  } else {
+    section.style.display = 'none';
+  }
+}
+
+const blackAndWhiteBtn = document.getElementById('blackAndWhite');
+  const highContrastBtn = document.getElementById('highContrast');
+  const blueContrastBtn = document.getElementById('blueContrast');
+  const greenContrastBtn = document.getElementById('greenContrast');
+  const yellowContrastBtn = document.getElementById('yellowContrast');
+
+  blackAndWhiteBtn.addEventListener('click', function() {
+    document.body.classList.remove('high-contrast', 'blue-contrast', 'green-contrast', 'yellow-contrast');
+    document.body.classList.add('black-and-white');
+  });
+
+  highContrastBtn.addEventListener('click', function() {
+    document.body.classList.remove('black-and-white', 'blue-contrast', 'green-contrast', 'yellow-contrast');
+    document.body.classList.add('high-contrast');
+  });
+
+  blueContrastBtn.addEventListener('click', function() {
+    document.body.classList.remove('high-contrast', 'black-and-white', 'green-contrast', 'yellow-contrast');
+    document.body.classList.add('blue-contrast');
+  });
+
+  greenContrastBtn.addEventListener('click', function() {
+    document.body.classList.remove('high-contrast', 'black-and-white', 'blue-contrast', 'yellow-contrast');
+    document.body.classList.add('green-contrast');
+  });
+
+  yellowContrastBtn.addEventListener('click', function() {
+    document.body.classList.remove('high-contrast', 'black-and-white', 'blue-contrast', 'green-contrast');
+    document.body.classList.add('yellow-contrast');
+  });
+
+  blackAndWhiteBtn.addEventListener('click', function() {
+document.body.classList.remove('high-contrast', 'blue-contrast', 'green-contrast', 'yellow-contrast');
+document.body.classList.add('black-and-white');
+
+
+if (isDarkColor(getComputedStyle(document.body).backgroundColor)) {
+  document.body.style.color = '#fff'; 
+} else {
+  document.body.style.color = '#000'; 
+}
+});
+
+function isDarkColor(color) {
+color = color.substring(4, color.length - 1).replace(/ /g, '').split(',');
+const hsl = rgbToHsl(parseInt(color[0]), parseInt(color[1]), parseInt(color[2]));
+
+
+return hsl[2] < 0.5; 
+}
+
+function rgbToHsl(r, g, b) {
+r /= 255, g /= 255, b /= 255;
+const max = Math.max(r, g, b), min = Math.min(r, g, b);
+let h, s, l = (max + min) / 2;
+
+if (max === min) {
+  h = s = 0; 
+} else {
+  const d = max - min;
+  s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  switch (max) {
+    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+    case g: h = (b - r) / d + 2; break;
+    case b: h = (r - g) / d + 4; break;
+  }
+  h /= 6;
+}
+
+return [h, s, l];
+}
+
+    </script>
+    <br>
+    </div>
+    </div>
+    <div>
+    <div class="divider"></div>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="social">
+          <a href="https://facebook.com">
+            <img src="./img/social-facebook.svg" alt="" />
+          </a>
+          <a href="https://instagram.com">
+            <img src="./img/social-instagram.svg" alt="" />
+          </a>
+          <a href="https://youtube.com">
+            <img src="./img/social-youtube.svg" alt="" />
+          </a>
+          <a href="https://twitter.com">
+            <img src="./img/twitter.png" alt="" />
+          </a>
+        </div>
+  </body>
+</html>
